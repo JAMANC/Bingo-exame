@@ -1,17 +1,16 @@
 <?php
+if(session_status()=== PHP_SESSION_NONE){
+    session_start();
 
-
-session_start();
-
+}
+require_once 'C:/xampp/htdocs/exame/includes/db.php';
 require_once 'C:/xampp/htdocs/exame/model/user.php';
 
 class LoginController {
-
     private $user;
-    public function __construct($db)
-    {
+    
+    public function __construct($db) {
         $this->user = new User($db);
-        
     }
 
     public function index() {
@@ -21,35 +20,38 @@ class LoginController {
 
     // Handle login form submission
     public function login() {
-        // Check if the form is submitted
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Process the login logic here
-            // Retrieve the entered username and password
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+            if (isset($_POST['email']) && isset($_POST['password'])) {
+                // Retrieve the entered email and password
+                $email = $_POST['email'];
+                $password = $_POST['password'];
 
-            // Validate the email and password
-            $emailExist = $this->user->isEmailExists($email);
-             if($emailExist){
-                echo "checking email";
-                //check password 
-                $passwordMatch = $this->user->isPasswordExists($password);
-                if($passwordMatch){
-                    $_SESSION['user_id']=$this->user->getUserIdByEmail($email);
-                    $_SESSION['email']= $email;
+                // Validate the email
+                $emailExists = $this->user->isEmailExists($email);
+                if ($emailExists) {
+                    // Check if the password matches
+                    $hashedPassword = $this->user->getHashedPasswordByEmail($email);
+                    if (password_verify($password,$hashedPassword)) {
+                        $_SESSION['user_id'] = $this->user->getUserIdByEmail($email);
+                        $_SESSION['email'] = $email;
 
-                    //redirect to home 
-                    header('Location: home.php');
-                    exit();
+                        echo "success";
+                        // Redirect to home
+                       // header('Location: ./index.php');
+                        exit();
+                    } else {
+                        echo "Invalid password. Please try again";
+                    }
+                } else {
+                    echo "Invalid email. Please try again";
                 }
-             }else{
-                echo "<script>alert('Invalid password or email. Please try again' ); </script>";
-             }
-
-
+            }
         }
-
-       
-            
     }
+
+
 }
+
+$loginController = new LoginController($conn);
+$loginController->login();
+?>

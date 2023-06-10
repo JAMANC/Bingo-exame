@@ -21,11 +21,14 @@ function validateLoginForm() {
 
 // Registration page specific functions
 function validateRegistrationForm() {
-  var username = document.getElementById("username").value;
+  var firstname = document.getElementById("firstname").value;
+  var lastname = document.getElementById(
+    'lastname'
+  ).value;
   var password = document.getElementById("password").value;
   var email = document.getElementById("email").value;
 
-  if (username === "" || password === "" || email === "") {
+  if (firstname === "" || lastname===""|| password === "" || email === "") {
     showAlert("Please fill in all fields.");
     return false;
   }

@@ -18,17 +18,17 @@ class User {
        return [];
     }
 
-    public function createUser($username, $password, $email) {
+    public function createUser($firstname,$lastname, $email,$phone, $password) {
         // Hash the password
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 
         // Prepare the query
-        $query = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+        $query = "INSERT INTO users (firstname,lastname, email, phone,password) VALUES (?, ?, ?,?,?)";
         $stmt = $this->conn->prepare($query);
 
         // Bind the parameters
-        $stmt->bind_param("sss", $username, $hashedPassword, $email);
+        $stmt->bind_param("sssss", $firstname,$lastname, $email,$phone, $hashedPassword);
 
         // Execute the query
         if ($stmt->execute()) {
@@ -39,26 +39,6 @@ class User {
     
     }
 
-    // Get user by username
-    public function getUserByUsername($username) {
-        // Prepare the query
-        $query = "SELECT * FROM users WHERE username = ?";
-        $stmt = $this->conn->prepare($query);
-
-        // Bind the parameter
-        $stmt->bind_param("s", $username);
-
-        // Execute the query
-        $stmt->execute();
-
-        // Get the result
-        $result = $stmt->get_result();
-
-        // Fetch the user data
-        $user = $result->fetch_assoc();
-
-        return $user;
-    }
 
     // Get user by Id 
     public function getUserIdByEmail($email){
@@ -147,23 +127,25 @@ class User {
     }
 
     //Check if the the given password matchs 
-    public function isPasswordExists($password){
-        $query = "SELECT * FROM users WHERE password = ?";
-        $stmt = $this->conn->prepare($query);
+    public function getHashedPasswordByEmail($email) {
+      // Prepare the query
+      $query = "SELECT * FROM users WHERE email = ?";
+      $stmt = $this->conn->prepare($query);
 
-        // Bind the parameter
-        $stmt->bind_param("s", $password);
+      // Bind the parameter
+      $stmt->bind_param("s", $email);
 
-        // Execute the query
-        $stmt->execute();
+      // Execute the query
+      $stmt->execute();
 
-        // Get the result
-        $result = $stmt->get_result();
+      // Get the result
+      $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
-            return true;  
-        } else {
-            return false;
-        }
+      // Fetch the user data
+      $user = $result->fetch_assoc();
+
+      return $user["password"];
     }
+
+   
 }

@@ -1,8 +1,25 @@
 <?php
 class MyAccountController {
-    // Display the My Account page
+    private $userInstance ;
+    public function __construct($db)
+    {
+        $this->userInstance = new User($db);
+        
+    }
+
+    // Display the home page
     public function index() {
-        // Load the My Account view
-        include_once 'includes/views/myaccount.php';
+        
+        if(isset($_SESSION['email'])){
+            $userEmail= $_SESSION['email'];
+            $currentUser =  $this->userInstance->getUserByEmail($userEmail);
+            $firstname = $currentUser['firstname'];
+            $lastname = $currentUser['lastname'];
+            $phone = $currentUser['phone'];
+            $email = $currentUser['email'];
+              //Load the home view
+        include_once 'views/myaccount.php';
+        }
+       
     }
 }

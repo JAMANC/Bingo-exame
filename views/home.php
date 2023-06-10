@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>iPortfolio Bootstrap Template - Index</title>
+    <title>Home</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -46,7 +46,7 @@
             <div class="profile">
                 <img src="assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle" />
 
-                <h1 class="text-light"><a href="index.html">Alex Smith</a></h1>
+                <h1 class="text-light"><a href="index.html"> <?php echo $firstname; ?> </a></h1>
                 <div class="social-links mt-3 text-center">
                     <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
                     <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
@@ -59,20 +59,29 @@
             <nav id="navbar" class="nav-menu navbar">
                 <ul>
                     <li>
-                        <a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i>
+                        <a href="/" class="nav-link scrollto active"><i class="bx bx-home"></i>
                             <span>Home</span></a>
                     </li>
                     <li>
-                        <a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>Account</span></a>
+                        <a href="/exame/account" class="nav-link scrollto"><i class="bx bx-user"></i> <span>Account</span></a>
                     </li>
 
                     <li>
-                        <a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i>
+                        <a href="/exame/contact" class="nav-link scrollto"><i class="bx bx-envelope"></i>
                             <span>Contact</span></a>
                     </li>
                     <li>
-                        <a href="#aboutus" class="nav-link scrollto"><i class="bx bx-server"></i> <span>About
+                        <a href="/exame/about" class="nav-link scrollto"><i class="bx bx-server"></i> <span>About
                                 Us</span></a>
+                    </li>
+                    <li>
+                        <a href="?action=logout" class="nav-link scrollto">
+                            <i
+                                class="bx bx-share bx-fade-right-hover"></i>
+                                <span>
+                                Logout
+                            </span>
+                        </a>
                     </li>
                 </ul>
             </nav>
@@ -89,7 +98,7 @@
         <div class="hero-container" data-aos="fade-in">
 
 
-            <h1>JOAO</h1>
+            <h1><?php echo $firstname; ?></h1>
             <p>
                 I'm
                 <span class="typed" data-typed-items="Designer, Developer, Freelancer, Photographer"></span>

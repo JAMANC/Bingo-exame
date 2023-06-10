@@ -1,26 +1,54 @@
 <?php
+
+require_once 'C:/xampp/htdocs/exame/includes/db.php';
+require_once 'C:/xampp/htdocs/exame/model/user.php';
+
 class RegistrationController {
-    // Display the registration page
+    private $user;
+    
+    public function __construct($db) {
+        $this->user = new User($db);
+    }
+
     public function index() {
         // Load the registration view
-        include_once 'includes/views/registration.php';
+        include_once 'C:/xampp/htdocs/exame/views/registration.php';
     }
 
     // Handle registration form submission
     public function register() {
-        // Check if the form is submitted
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Process the registration logic here
-            // Retrieve the entered username, password, email, and other registration data
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            $email = $_POST['email'];
+            if (isset($_POST['email']) && isset($_POST['firstname'])  && isset($_POST['lastname'])&& isset($_POST['phone'])&& isset($_POST['password'])) {
+                // Retrieve the entered email, username, and password
+                $firstname = $_POST['firstname'];
+                $lastname = $_POST['lastname'];
+                $phone =$_POST['phone'];
+                $email = $_POST['email'];
+                $password = $_POST['password'];
 
-            // Validate the registration data
-
-            // Create a new user in the database
-
-            // Redirect to the appropriate page based on the registration result
+                $emailExists = $this->user->isEmailExists($email);
+                if (!$emailExists) {
+                   
+                
+                        // Create a new user
+                        $this->user->createUser($firstname,$lastname, $email,$phone,$password);
+                        echo "success";
+                        // Redirect to login page
+                        //header('Location: LoginController.php');
+                        //exit();
+                 
+                } else {
+                    echo "Email is already registered. Please use a different email.";
+                }
+            }
         }
     }
+
+   
 }
+
+    $registrationController = new RegistrationController($conn);
+    $registrationController->register(); 
+    
+
+?>
