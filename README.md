@@ -1,4 +1,6 @@
 ##Bingo-exame
+
+
 --- conecao com db  
 --- cria pagina inicial "home page "
 --- pegar os dados do usuario fake 
